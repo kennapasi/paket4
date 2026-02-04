@@ -13,10 +13,10 @@
         <div class="container mx-auto flex justify-between items-center">
             <a href="/dashboard" class="font-bold text-xl">Perpus Sekolah</a>
             <div>
-                @if(Auth::user()->role == 'admin')
-                    <a href="{{ route('books.index') }}" class="px-4 hover:underline">Data Buku</a>
-                    <a href="{{ route('transactions.index') }}" class="px-4 hover:underline">Transaksi</a>
-                @endif
+                {{-- @if(Auth::user()->role == 'admin') --}}
+                    {{-- <a href="{{ route('books.index') }}" class="px-4 hover:underline">Data Buku</a> --}}
+                    {{-- <a href="{{ route('transactions.index') }}" class="px-4 hover:underline">Transaksi</a> --}}
+                {{-- @endif --}}
                 <form action="{{ route('logout') }}" method="POST" class="inline">
                     @csrf
                     <button type="submit" class="bg-red-500 px-3 py-1 rounded hover:bg-red-700">Logout</button>

@@ -3,26 +3,32 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
-use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\AdminController;
 
-// Halaman Depan (Login)
-Route::get('/', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'authenticate']);
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
-// Group Middleware agar hanya yang sudah login bisa akses
-Route::middleware(['auth'])->group(function () {
-
-    // Dashboard (Bisa diakses admin & siswa, nanti di view dibedakan menunya)
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-
-    // Route Khusus Admin
-    Route::middleware(['checkRole:admin'])->group(function () {
-        Route::resource('books', BookController::class);
-        Route::resource('transactions', TransactionController::class);
-        // Route khusus untuk tombol "Kembalikan Buku"
-        Route::patch('/transactions/{id}/complete', [TransactionController::class, 'complete'])->name('transactions.complete');
-    });
+// 1. Halaman Depan (Loading Page)
+Route::get('/', function () {
+    return view('welcome');
 });
+
+Route::middleware(['auth'])->prefix('admin')->group(function () {
+
+    // Dashboard Admin
+
+    // Nanti rute buku & kategori taruh di sini...
+    });
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+
+// 2. Rute untuk Login & Logout
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login'); // Menampilkan Form
+Route::post('/login', [AuthController::class, 'login']); // Proses Login
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout'); // Proses Logout
+
+// 3. Rute Sementara (Untuk test setelah login)
+// Nanti kita rapikan lagi saat masuk fitur Admin/Peminjam
+Route::get('/books', [BookController::class, 'index'])->name('books.index')->middleware('auth');
+Route::get('/books', [BookController::class, 'create'])->name('books.create')->middleware('auth');
+Route::post('/books', [BookController::class, 'store'])->name('books.store')->middleware('auth');
+Route::get('/admin/dashboard', function(){
+    return "Halo Admin! Ini Dashboard kamu."; // Sementara teks dulu
+
+})->middleware('auth');

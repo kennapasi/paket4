@@ -2,10 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-namespace App\Http\Controllers;
-
 use App\Models\Book;
 use Illuminate\Http\Request;
 
@@ -13,7 +9,11 @@ class BookController extends Controller
 {
     public function index() {
         $books = Book::all();
-        return view('books.index', compact('books'));
+        return view('books.index', compact(
+            [
+                'books' => $books
+            ]
+        ));
     }
 
     public function create() {
@@ -23,6 +23,7 @@ class BookController extends Controller
     public function store(Request $request) {
         $request->validate([
             'judul' => 'required',
+            
             'penulis' => 'required',
             'penerbit' => 'required',
             'tahun_terbit' => 'required|integer',
@@ -30,7 +31,7 @@ class BookController extends Controller
         ]);
 
         Book::create($request->all());
-        return redirect()->route('books.index')->with('success', 'Buku berhasil ditambahkan');
+        return view('books.index')->with('success', 'Buku berhasil ditambahkan');
     }
 
     public function edit(Book $book) {

@@ -10,14 +10,15 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    /**
+     * Kolom yang boleh diisi secara massal (PENTING: username & role harus ada di sini)
+     */
     protected $fillable = [
-        'username',
-        'password',
+        'name',
+        'username', // <--- Wajib ada
         'email',
-        'nama_lengkap',
-        'nis',
-        'alamat',
-        'role',
+        'password',
+        'role',     // <--- Wajib ada
     ];
 
     protected $hidden = [
@@ -25,16 +26,8 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'password' => 'hashed',
-        ];
-    }
-
-    // Relasi: Satu user (siswa) bisa memiliki banyak transaksi peminjaman
-    public function transactions()
-    {
-        return $this->hasMany(Transaction::class);
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
 }
