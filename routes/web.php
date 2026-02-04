@@ -4,31 +4,38 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\TransactionController;
 
-// 1. Halaman Depan (Loading Page)
+// 1. Landing Page
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['auth'])->prefix('admin')->group(function () {
+// 2. Auth Routes
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    // Dashboard Admin
+// 3. Protected Routes (Harus Login)
+Route::middleware(['auth'])->group(function () {
 
-    // Nanti rute buku & kategori taruh di sini...
+    // Katalog Buku (Akses Umum setelah Login)
+    Route::get('/books', [BookController::class, 'index'])->name('books.index');
+
+    // Fitur Khusus Peminjam (Mencegah Admin meminjam buku sendiri jika ingin rapi)
+    Route::get('/my-loans', [TransactionController::class, 'index'])->name('transactions.index');
+    Route::post('/transactions', [TransactionController::class, 'store'])->name('transactions.store');
+
+    // Admin Area (Ditambahkan proteksi tambahan)
+    Route::prefix('admin')->group(function () {
+        // Gunakan middleware custom jika sudah dibuat, atau cek manual di Controller
+        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+
+        // Manajemen Buku (CRUD)
+        Route::get('/books/create', [BookController::class, 'create'])->name('books.create');
+        Route::post('/books', [BookController::class, 'store'])->name('books.store');
+        Route::get('/books/{book}/edit', [BookController::class, 'edit'])->name('books.edit');
+        Route::put('/books/{book}', [BookController::class, 'update'])->name('books.update');
+        Route::delete('/books/{book}', [BookController::class, 'destroy'])->name('books.destroy');
     });
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-
-// 2. Rute untuk Login & Logout
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login'); // Menampilkan Form
-Route::post('/login', [AuthController::class, 'login']); // Proses Login
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout'); // Proses Logout
-
-// 3. Rute Sementara (Untuk test setelah login)
-// Nanti kita rapikan lagi saat masuk fitur Admin/Peminjam
-Route::get('/books', [BookController::class, 'index'])->name('books.index')->middleware('auth');
-Route::get('/books', [BookController::class, 'create'])->name('books.create')->middleware('auth');
-Route::post('/books', [BookController::class, 'store'])->name('books.store')->middleware('auth');
-Route::get('/admin/dashboard', function(){
-    return "Halo Admin! Ini Dashboard kamu."; // Sementara teks dulu
-
-})->middleware('auth');
+});

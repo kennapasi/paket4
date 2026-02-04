@@ -4,57 +4,36 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    // Menampilkan halaman login
-    public function showLoginForm()
-    {
+    public function showLoginForm() {
         return view('auth.login');
     }
 
-    // Proses Login
-    public function login(Request $request)
-    {
-        // 1. Validasi input
+    public function login(Request $request) {
         $request->validate([
-            'login_id' => 'required|string', // Bisa email atau username
+            'login_id' => 'required|string',
             'password' => 'required|string',
         ]);
 
-        // 2. Tentukan apakah inputnya Email atau Username
         $loginType = filter_var($request->login_id, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-
-        // 3. Coba Login
-        // Kita gabungkan info di atas menjadi array kredensial
-        $credentials = [
-            $loginType => $request->login_id,
-            'password' => $request->password
-        ];
+        $credentials = [$loginType => $request->login_id, 'password' => $request->password];
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            // 4. Redirect sesuai Role
-            // Kalau admin -> ke dashboard admin
-            // Kalau siswa -> ke halaman buku
+            // Redirect berdasarkan Role
             if (Auth::user()->role === 'admin') {
-                return redirect()->intended('/dashboard'); // Nanti kita buat rute ini
+                return redirect()->route('admin.dashboard');
             }
-
-            return redirect()->intended('/books');
+            return redirect()->route('books.index');
         }
 
-        // 5. Kalau Gagal
-        return back()->withErrors([
-            'login_id' => 'Username atau Password salah.',
-        ]);
+        return back()->withErrors(['login_id' => 'Username atau Password salah.']);
     }
 
-    // Proses Logout
-    public function logout(Request $request)
-    {
+    public function logout(Request $request) {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

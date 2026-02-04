@@ -49,10 +49,17 @@
                 @enderror
             </div>
 
-            <button type="submit"
+            <div class="flex-col flex gap-2">
+                 <button type="submit"
                 class="w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold rounded-lg shadow-lg transform transition hover:scale-105">
                 MASUK
             </button>
+             <button
+                class="w-full py-3 px-4 bg-neutral-500 hover:from-blue-600 hover:to-purple-700 text-white font-bold rounded-lg shadow-lg transform transition hover:scale-105">
+                <a href="/">KEMBALI</a>
+            </button>
+        </div>
+
         </form>
     </div>
 

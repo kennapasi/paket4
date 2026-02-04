@@ -9,6 +9,7 @@ class Book extends Model
 {
     use HasFactory;
 
+    // Menentukan kolom mana saja yang boleh diisi secara massal
     protected $fillable = [
         'judul',
         'penulis',
@@ -17,7 +18,9 @@ class Book extends Model
         'stok',
     ];
 
-    // Relasi: Satu buku bisa ada di banyak transaksi
+    /**
+     * Relasi: Satu buku bisa memiliki banyak transaksi peminjaman
+     */
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
