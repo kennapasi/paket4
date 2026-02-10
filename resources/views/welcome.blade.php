@@ -22,11 +22,22 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
-        .bg-gambar {
-            background-image: url('/melet.png');
-            background-position: center;
+.bg-gambar {
+    background-image: url('/adevanturetime.jpg');
+    background-position: center;
 
-        }
+    /* 1. Agar gambar memenuhi seluruh area container */
+    background-size: cover;
+
+    /* 2. Agar gambar tidak diulang-ulang */
+    background-repeat: no-repeat;
+
+    /* 3. (Opsional) Agar tinggi elemen memenuhi 100% tinggi layar monitor */
+    height: 100vh;
+
+    /* 4. (Opsional) Agar lebar elemen 100% */
+    width: 100%;
+}
     </style>
 </head>
 <body class="antialiased text-white h-screen bg-gambar flex flex-col justify-center items-center">
@@ -37,7 +48,7 @@
     </video>
 
     <div class="z-10 text-center px-4">
-        <h1 class="text-5xl font-bold mb-4 tracking-tight">Perpustakaan Digital</h1>
+        <h1 class="text-5xl font-bold mb-4 tracking-tight">Aeternum Library</h1>
         <p class="text-xl mb-12 text-gray-200">Jelajahi dunia pengetahuan dalam genggamanmu.</p>
 
         <div class="flex flex-col md:flex-row gap-6 justify-center">

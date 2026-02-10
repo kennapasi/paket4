@@ -9,27 +9,67 @@ use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
-    public function index() {
-        $transactions = Transaction::where('user_id', Auth::id())->with('book')->latest()->get();
+    // Halaman riwayat peminjaman user
+    public function index()
+    {
+        // Mengambil data peminjaman milik user yang sedang login
+        $transactions = Transaction::where('user_id', Auth::id())
+                        ->with('book')
+                        ->latest()
+                        ->get();
+
         return view('transactions.index', compact('transactions'));
     }
 
-    public function store(Request $request) {
+    public function adminIndex()
+{
+    // Mengambil semua transaksi, diurutkan dari yang terbaru
+    $transactions = Transaction::with(['user', 'book'])->latest()->get();
+    return view('admin.transactions.index', compact('transactions'));
+}
+
+// Tambahkan method ini jika belum ada (untuk tombol "Kembalikan"):
+public function returnBook(Transaction $transaction)
+{
+    $transaction->update([
+        'status' => 'returned',
+        'returned_at' => now(),
+    ]);
+
+    // Kembalikan stok buku
+    $transaction->book->increment('stok');
+
+    return back()->with('success', 'Buku berhasil dikembalikan dan stok diperbarui.');
+}
+
+    // Proses Logika Peminjaman
+    public function store(Request $request)
+    {
+        // 1. Validasi ID Buku
+        $request->validate([
+            'book_id' => 'required|exists:books,id',
+        ]);
+
+        // 2. Cari Data Buku
         $book = Book::findOrFail($request->book_id);
 
+        // 3. Cek Stok Buku
         if ($book->stok <= 0) {
-            return back()->with('error', 'Stok buku habis!');
+            return back()->with('error', 'Maaf, stok buku ini sudah habis!');
         }
 
+        // 4. Buat Transaksi Peminjaman
         Transaction::create([
             'user_id' => Auth::id(),
             'book_id' => $book->id,
             'borrowed_at' => now(),
-            'status' => 'borrowed'
+            'status' => 'borrowed' // Status awal dipinjam
         ]);
 
-        $book->decrement('stok'); // Kurangi stok di database
+        // 5. Kurangi Stok Buku Otomatis
+        $book->decrement('stok');
 
-        return redirect()->route('transactions.index')->with('success', 'Buku berhasil dipinjam!');
+        // 6. Arahkan ke halaman riwayat dengan pesan sukses
+        return redirect()->route('transactions.index')->with('success', 'Berhasil meminjam buku! Jangan lupa dikembalikan ya.');
     }
 }

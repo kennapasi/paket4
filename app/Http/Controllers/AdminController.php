@@ -19,4 +19,9 @@ class AdminController extends Controller
 
         return view('admin.dashboard', compact('totalBooks', 'totalUsers', 'activeLoans'));
     }
+    // Tambahkan method ini untuk Data Anggota
+public function usersIndex() {
+    $users = \App\Models\User::where('role', 'peminjam')->get();
+    return view('admin.users.index', compact('users'));
+}
 }
