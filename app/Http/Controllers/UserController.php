@@ -4,11 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Models\Transaction;
-use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class AdminController extends Controller
+class UserController extends Controller
 {
     public function dashboard()
     {
@@ -25,11 +23,6 @@ class AdminController extends Controller
             ->take(3)
             ->get();
 
-        return view('admin.dashboard', compact('totalBorrowed', 'pendingReturns', 'recentTransactions'));
+        return view('user.dashboard', compact('totalBorrowed', 'pendingReturns', 'recentTransactions'));
     }
-    // Tambahkan method ini untuk Data Anggota
-public function usersIndex() {
-    $users = \App\Models\User::where('role', 'peminjam')->get();
-    return view('admin.users.index', compact('users'));
-}
 }

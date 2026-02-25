@@ -27,8 +27,9 @@ class AuthController extends Controller
             // Redirect berdasarkan Role
             if (Auth::user()->role === 'admin') {
                 return redirect()->route('admin.dashboard');
+            } else if (Auth::user()->role === 'peminjam') {
+                return redirect()->route('books.index');
             }
-            return redirect()->route('books.index');
         }
 
         return back()->withErrors(['login_id' => 'Username atau Password salah.']);

@@ -17,6 +17,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->group(function () {
 
     // --- AREA PUBLIC / USER (Bisa diakses user & admin) ---
+   Route::get('/user/dashboard', [UserController::class, 'dashboard'])->name('user.dashboard');
+
     Route::get('/books', [BookController::class, 'index'])->name('books.index');
     Route::get('/my-loans', [TransactionController::class, 'index'])->name('transactions.index');
     Route::post('/transactions', [TransactionController::class, 'store'])->name('transactions.store');
@@ -42,4 +44,12 @@ Route::middleware(['auth'])->group(function () {
         // Manajemen User
         Route::get('/users', [AdminController::class, 'usersIndex'])->name('admin.users.index');
     });
+    Route::middleware(['auth'])->group(function () {
+    // Tambahkan ini:
+    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('user.dashboard');
+
+    Route::get('/books', [BookController::class, 'index'])->name('books.index');
+    // ...
+});
+
 });
