@@ -25,7 +25,9 @@ class AdminController extends Controller
             ->take(3)
             ->get();
 
-        return view('admin.dashboard', compact('totalBorrowed', 'pendingReturns', 'recentTransactions'));
+        // return view('admin.dashboard', compact('totalBorrowed', 'pendingReturns', 'recentTransactions'));
+        $users = \App\Models\User::where('role', 'peminjam')->get();
+        return view('admin.users.index', compact('users'));
     }
     // Tambahkan method ini untuk Data Anggota
 public function usersIndex() {

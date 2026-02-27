@@ -29,7 +29,8 @@ class BookController extends Controller
         ]);
 
         Book::create($request->all());
-        return redirect()->route('books.index')->with('success', 'Buku berhasil dipajang di etalase.');
+        // UBAH: Arahkan ke admin.books.index
+        return redirect()->route('admin.books.index')->with('success', 'Buku berhasil dipajang di etalase.');
     }
 
     // ADMIN: Halaman edit
@@ -45,18 +46,20 @@ class BookController extends Controller
         ]);
 
         $book->update($request->all());
-        return redirect()->route('books.index')->with('success', 'Data buku diperbarui.');
+        // UBAH: Arahkan ke admin.books.index
+        return redirect()->route('admin.books.index')->with('success', 'Data buku diperbarui.');
     }
 
     // ADMIN: Hapus buku
     public function destroy(Book $book) {
         $book->delete();
-        return redirect()->route('books.index')->with('success', 'Buku ditarik dari etalase.');
+        // UBAH: Arahkan ke admin.books.index
+        return redirect()->route('admin.books.index')->with('success', 'Buku ditarik dari etalase.');
     }
-    // Tambahkan method ini untuk Tampilan Admin (Tabel)
-public function adminIndex() {
-    $books = Book::all();
-    return view('admin.books.index', compact('books')); // View baru khusus admin
-}
 
+    // Tambahkan method ini untuk Tampilan Admin (Tabel)
+    public function adminIndex() {
+        $books = Book::all();
+        return view('admin.books.index', compact('books')); // View khusus admin
+    }
 }

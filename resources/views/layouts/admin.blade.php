@@ -43,8 +43,8 @@
     <a href="{{ route('admin.dashboard') }}" class="flex items-center px-4 py-3 {{ request()->routeIs('admin.dashboard') ? 'bg-blue-600 text-white' : 'text-gray-400 hover:bg-gray-800' }} rounded-lg transition">
         <i class="fas fa-home w-6"></i> <span>Dashboard</span>
     </a>
-
-    <p class="text-xs text-gray-500 uppercase mt-4 mb-2 px-4">Master Data</p>
+                @if(Auth::user()->role === 'admin')
+<p class="text-xs text-gray-500 uppercase mt-4 mb-2 px-4">Master Data</p>
 
     <a href="{{ route('admin.books.index') }}" class="flex items-center px-4 py-3 {{ request()->routeIs('admin.books.*') ? 'bg-blue-600 text-white' : 'text-gray-400 hover:bg-gray-800' }} rounded-lg transition">
         <i class="fas fa-book w-6"></i> <span>Kelola Buku</span>
@@ -59,6 +59,8 @@
     <a href="{{ route('admin.transactions.index') }}" class="flex items-center px-4 py-3 {{ request()->routeIs('admin.transactions.*') ? 'bg-blue-600 text-white' : 'text-gray-400 hover:bg-gray-800' }} rounded-lg transition">
         <i class="fas fa-clipboard-list w-6"></i> <span>Peminjaman</span>
     </a>
+                @endif
+
 </nav>
 
             <div class="p-4 border-t border-slate-800/50 bg-slate-900/50 backdrop-blur-sm">
