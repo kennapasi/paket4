@@ -11,7 +11,7 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    public function login(Request $request) {
+   public function login(Request $request) {
         $request->validate([
             'login_id' => 'required|string',
             'password' => 'required|string',
@@ -23,13 +23,12 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-
-            // Redirect berdasarkan Role
+            // Redirect berdasarkan Role yang BENAR
             if (Auth::user()->role === 'admin') {
                 return redirect()->route('admin.dashboard');
-            } else if (Auth::user()->role === 'peminjam') {
-                return redirect()->route('books.index');
             }
+            // Jika user biasa, lempar ke dashboard user
+            return redirect()->route('user.dashboard');
         }
 
         return back()->withErrors(['login_id' => 'Username atau Password salah.']);

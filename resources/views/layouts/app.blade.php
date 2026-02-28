@@ -5,53 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perpustakaan Digital</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
-<body class="bg-slate-50 text-slate-900 min-h-screen">
+<body class="bg-slate-50 text-slate-800">
 
-    <nav class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <div class="bg-blue-600 p-2 rounded-lg shadow-blue-200 shadow-lg text-white">
-                    <i class="fas fa-book-open text-xl"></i>
-                </div>
-                <a href="{{ Auth::user()->role === 'admin' ? route('admin.dashboard') : route('books.index') }}" class="font-bold text-xl tracking-tight text-slate-800">
-                    Perpus<span class="text-blue-600">Ku</span>
-                </a>
-            </div>
-
-            <div class="flex items-center space-x-2 md:space-x-6">
-                <a href="{{ route('books.index') }}" class="hidden md:block text-slate-600 hover:text-blue-600 font-medium transition-colors">
-                    Katalog Buku
-                </a>
-
-                @if(Auth::user()->role === 'peminjam')
-                    <a href="{{ route('transactions.index') }}" class="hidden md:block text-slate-600 hover:text-blue-600 font-medium transition-colors">
-                        Pinjaman Saya
+    <nav class="bg-white shadow-sm border-b border-slate-100">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center gap-6">
+                    <a href="{{ route('user.dashboard') }}" class="text-xl font-bold text-blue-600 flex items-center gap-2">
+                        <i class="fas fa-book-reader"></i> PerpusKu
                     </a>
-                @endif
-
-                @if(Auth::user()->role === 'admin')
-                    <a href="{{ route('admin.dashboard') }}" class="hidden md:block text-slate-600 hover:text-blue-600 font-medium transition-colors">
-                        Dashboard
-                    </a>
-                @endif
-
-                <div class="flex items-center gap-4 pl-4 border-l border-slate-200">
-                    <div class="hidden sm:block text-right">
-                        <p class="text-xs font-semibold text-slate-800 leading-none">{{ Auth::user()->name }}</p>
-                        <p class="text-[10px] text-slate-500 uppercase tracking-wider font-bold mt-1">{{ Auth::user()->role }}</p>
+                    <div class="hidden sm:flex space-x-4 ml-6">
+                        <a href="{{ route('user.dashboard') }}" class="{{ request()->routeIs('user.dashboard') ? 'text-blue-600 font-semibold' : 'text-slate-500 hover:text-blue-600' }}">Dashboard</a>
+                        <a href="{{ route('books.index') }}" class="{{ request()->routeIs('books.index') ? 'text-blue-600 font-semibold' : 'text-slate-500 hover:text-blue-600' }}">Katalog Buku</a>
+                        <a href="{{ route('transactions.index') }}" class="{{ request()->routeIs('transactions.index') ? 'text-blue-600 font-semibold' : 'text-slate-500 hover:text-blue-600' }}">Peminjaman Saya</a>
                     </div>
+                </div>
 
+                <div class="flex items-center">
+                    <span class="text-slate-600 mr-4 text-sm font-medium">Hai, {{ Auth::user()->name }}</span>
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <button type="submit" class="bg-rose-50 text-rose-600 p-2 rounded-lg hover:bg-rose-600 hover:text-white transition-all shadow-sm border border-rose-100 flex items-center gap-2 text-sm font-semibold">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span class="hidden md:inline">Keluar</span>
+                        <button type="submit" class="text-red-500 hover:text-red-700 text-sm font-medium">
+                            <i class="fas fa-sign-out-alt"></i> Keluar
                         </button>
                     </form>
                 </div>
@@ -59,35 +36,9 @@
         </div>
     </nav>
 
-    <main class="container mx-auto mt-10 px-4 pb-20">
-        @if(session('success'))
-            <div id="alert" class="flex items-center p-4 mb-6 text-emerald-800 rounded-2xl bg-emerald-50 border border-emerald-100 shadow-sm animate-fade-in-down">
-                <i class="fas fa-check-circle mr-3"></i>
-                <div class="text-sm font-medium">{{ session('success') }}</div>
-                <button onclick="document.getElementById('alert').remove()" class="ml-auto text-emerald-500 hover:text-emerald-700">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        @endif
-
-        @if(session('error'))
-            <div id="alert-error" class="flex items-center p-4 mb-6 text-rose-800 rounded-2xl bg-rose-50 border border-rose-100 shadow-sm animate-fade-in-down">
-                <i class="fas fa-exclamation-triangle mr-3"></i>
-                <div class="text-sm font-medium">{{ session('error') }}</div>
-                <button onclick="document.getElementById('alert-error').remove()" class="ml-auto text-rose-500 hover:text-rose-700">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        @endif
-
+    <main class="py-10 px-4 sm:px-6 lg:px-8">
         @yield('content')
     </main>
-
-    <footer class="border-t border-slate-200 bg-white py-8 mt-auto">
-        <div class="container mx-auto px-4 text-center text-slate-500 text-sm">
-            &copy; 2024 Perpustakaan Digital Sekolah. Built with ❤️ for Students.
-        </div>
-    </footer>
 
 </body>
 </html>
