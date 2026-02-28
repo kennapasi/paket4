@@ -10,25 +10,16 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // 1. Buat Akun Admin Utama
-        User::create([
-            'name' => 'Administrator',
-            'username' => 'admin', // Login pakai ini
-            'email' => 'admin@sekolah.com', // Atau ini
-            'password' => Hash::make('password123'), // Password
-            'role' => 'admin',
-        ]);
+        // Mengecek apakah admin sudah ada agar tidak error duplicate saat di-seed ulang
+        $admin = User::where('email', 'admin@perpusku.com')->first();
 
-        // 2. Buat Akun Siswa Dummy (Buat ngetes nanti)
-        User::create([
-            'name' => 'Siswa Contoh',
-            'username' => 'siswa01',
-            'email' => 'siswa@sekolah.com',
-            'password' => Hash::make('password123'),
-            'role' => 'peminjam',
-            'nis' => '12345678',    
-        ]);
-
-        // Nanti kita tambah seed buku & kategori di sini
+        if (!$admin) {
+            User::create([
+                'name' => 'Super Admin',
+                'email' => 'admin@perpusku.com',
+                'password' => Hash::make('admin123'), // Password default admin
+                'role' => 'admin',
+            ]);
+        }
     }
 }

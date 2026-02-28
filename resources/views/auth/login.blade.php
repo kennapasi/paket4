@@ -1,66 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Perpustakaan</title>
+    <title>Masuk - PerpusKu</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .video-bg {
-            position: fixed; right: 0; bottom: 0;
-            min-width: 100%; min-height: 100%;
-            z-index: -1; object-fit: cover;
-            filter: brightness(40%);
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body class="flex items-center justify-center h-screen text-white">
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen flex items-center justify-center p-4">
 
-    <video autoplay muted loop class="video-bg">
-        <source src="https://videos.pexels.com/video-files/2928896/2928896-hd_1920_1080_24fps.mp4" type="video/mp4">
-    </video>
-
-    <div class="bg-black/40 backdrop-blur-md p-8 rounded-2xl shadow-2xl w-full max-w-md border border-white/10">
+    <div class="max-w-md w-full" x-data="{ role: 'user' }">
         <div class="text-center mb-8">
-            <h2 class="text-3xl font-bold mb-2">Selamat Datang</h2>
-            <p class="text-gray-300 text-sm">Silakan masuk dengan akun Anda</p>
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-600 text-white shadow-lg mb-4">
+                <i class="fas fa-book-reader text-3xl"></i>
+            </div>
+            <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Perpus<span class="text-blue-600">Ku</span></h1>
+            <p class="text-slate-500 mt-2">Masuk untuk melanjutkan eksplorasi</p>
         </div>
 
-        <form method="POST" action="{{ route('login') }}">
-            @csrf
+        <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
 
-            <div class="mb-6">
-                <label for="login_id" class="block text-sm font-medium text-gray-300 mb-2">Username / Email</label>
-                <input id="login_id" type="text" name="login_id" required autofocus
-                    class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                    placeholder="Masukkan username atau email">
-                @error('login_id')
-                    <span class="text-red-400 text-xs mt-1">{{ $message }}</span>
-                @enderror
+            <div class="flex border-b border-slate-100">
+                <button @click="role = 'user'" :class="role === 'user' ? 'text-blue-600 border-b-2 border-blue-600 font-bold bg-blue-50/50' : 'text-slate-400 hover:text-slate-600 font-medium'" class="flex-1 py-4 text-sm transition-all outline-none">
+                    <i class="fas fa-user mr-2"></i> Anggota (User)
+                </button>
+                <button @click="role = 'admin'" :class="role === 'admin' ? 'text-blue-600 border-b-2 border-blue-600 font-bold bg-blue-50/50' : 'text-slate-400 hover:text-slate-600 font-medium'" class="flex-1 py-4 text-sm transition-all outline-none">
+                    <i class="fas fa-user-shield mr-2"></i> Administrator
+                </button>
             </div>
 
-            <div class="mb-6">
-                <label for="password" class="block text-sm font-medium text-gray-300 mb-2">Password</label>
-                <input id="password" type="password" name="password" required
-                    class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                    placeholder="••••••••">
-                @error('password')
-                    <span class="text-red-400 text-xs mt-1">{{ $message }}</span>
-                @enderror
-            </div>
+            <div class="p-8">
+                @if($errors->any())
+                <div class="bg-red-50 text-red-500 p-3 rounded-xl text-sm mb-6 flex items-start gap-3">
+                    <i class="fas fa-exclamation-circle mt-0.5"></i>
+                    <span>{{ $errors->first() }}</span>
+                </div>
+                @endif
 
-            <div class="flex-col flex gap-2">
-                 <button type="submit"
-                class="w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold rounded-lg shadow-lg transform transition hover:scale-105">
-                MASUK
-            </button>
-             <button
-                class="w-full py-3 px-4 bg-neutral-500 hover:from-blue-600 hover:to-purple-700 text-white font-bold rounded-lg shadow-lg transform transition hover:scale-105">
-                <a href="/">KEMBALI</a>
-            </button>
+                <form action="{{ route('login') }}" method="POST">
+                    @csrf
+
+                    <div class="mb-5">
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Email / Username</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-envelope text-slate-400"></i>
+                            </div>
+                            <input type="text" name="login_id" value="{{ old('login_id') }}" required class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-blue-600 outline-none transition-all" placeholder="Masukkan email atau username">
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Password</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-lock text-slate-400"></i>
+                            </div>
+                            <input type="password" name="password" required class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-blue-600 outline-none transition-all" placeholder="••••••••">
+                        </div>
+                    </div>
+
+                    <button type="submit" :class="role === 'user' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-slate-800 hover:bg-slate-900'" class="w-full text-white font-bold py-3 rounded-xl transition-colors shadow-lg">
+                        <span x-show="role === 'user'">Masuk sebagai Anggota</span>
+                        <span x-show="role === 'admin'">Masuk sebagai Admin</span>
+                    </button>
+                </form>
+
+                <div x-show="role === 'user'" x-transition class="mt-6 text-center border-t border-slate-100 pt-6">
+                    <p class="text-sm text-slate-500 mb-2">Belum punya akun?</p>
+                    <a href="{{ route('register') }}" class="inline-block w-full py-3 bg-white border-2 border-slate-200 text-slate-700 font-bold rounded-xl hover:border-blue-600 hover:text-blue-600 transition-all">
+                        Daftar Akun Baru
+                    </a>
+                </div>
+
+                <div x-show="role === 'admin'" x-transition class="mt-6 text-center border-t border-slate-100 pt-6">
+                    <p class="text-xs text-slate-400">
+                        <i class="fas fa-info-circle mr-1"></i> Akun administrator hanya dapat dibuat oleh Developer.
+                    </p>
+                </div>
+            </div>
         </div>
-
-        </form>
     </div>
 
 </body>
