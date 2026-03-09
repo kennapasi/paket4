@@ -31,6 +31,15 @@
             <label class="block text-gray-700">Stok Awal</label>
             <input type="number" name="stok" class="w-full border p-2 rounded" required>
         </div>
+        <form action="{{ route('books.store') }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    <div class="mb-4">
+        <label class="block text-sm font-bold mb-2">Foto Buku (Wajib)</label>
+        <input type="file" name="image" class="w-full border rounded p-2" required>
+    </div>
+
+    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Simpan Buku</button>
+</form>
 
         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Simpan Buku</button>
         {{-- <a href="{{ route('books.index') }}" class="text-gray-500 ml-3">Batal</a> --}}

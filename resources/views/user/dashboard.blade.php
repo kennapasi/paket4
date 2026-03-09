@@ -52,8 +52,8 @@
                             <p class="text-xs text-slate-500">{{ $trx->created_at->diffForHumans() }}</p>
                         </div>
                     </div>
-                    <span class="px-3 py-1 rounded-full text-xs font-bold {{ $trx->status == 'borrowed' ? 'bg-amber-100 text-amber-600' : 'bg-emerald-100 text-emerald-600' }}">
-                        {{ $trx->status == 'borrowed' ? 'Dipinjam' : 'Dikembalikan' }}
+                    <span class="px-3 py-1 rounded-full text-xs font-bold {{ $trx->status == 'pinjam' ? 'bg-amber-100 text-amber-600' : 'bg-emerald-100 text-emerald-600' }}">
+                        {{ $trx->status == 'pinjam' ? 'Dipinjam' : 'Dikembalikan' }}
                     </span>
                 </div>
             @empty

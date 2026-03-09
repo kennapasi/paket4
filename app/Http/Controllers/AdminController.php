@@ -5,33 +5,25 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Models\Transaction;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
+    // Dashboard Khusus Admin
     public function dashboard()
     {
-        $userId = Auth::id();
+        // Hitung statistik keseluruhan perpustakaan
+        $totalBooks = Book::count();
+        $totalUsers = User::where('role', 'peminjam')->count();
+        $activeLoans = Transaction::where('status', 'pinjam')->count();
 
-        // Statistik khusus untuk user yang sedang login
-        $totalBorrowed = Transaction::where('user_id', $userId)->count();
-        $pendingReturns = Transaction::where('user_id', $userId)->where('status', 'borrowed')->count();
+        // Kirim 3 variabel ini ke tampilan admin
+        return view('admin.dashboard', compact('totalBooks', 'totalUsers', 'activeLoans'));
+    }
 
-        // Ambil 3 transaksi terakhir milik user
-        $recentTransactions = Transaction::with('book')
-            ->where('user_id', $userId)
-            ->latest()
-            ->take(3)
-            ->get();
-
-        // return view('admin.dashboard', compact('totalBorrowed', 'pendingReturns', 'recentTransactions'));
-        $users = \App\Models\User::where('role', 'peminjam')->get();
+    // Halaman Daftar Anggota
+    public function usersIndex()
+    {
+        $users = User::where('role', 'peminjam')->get();
         return view('admin.users.index', compact('users'));
     }
-    // Tambahkan method ini untuk Data Anggota
-public function usersIndex() {
-    $users = \App\Models\User::where('role', 'peminjam')->get();
-    return view('admin.users.index', compact('users'));
-}
 }

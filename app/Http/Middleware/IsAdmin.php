@@ -11,11 +11,9 @@ class IsAdmin
 {
     public function handle(Request $request, Closure $next): Response
     {
-        // Logika PENTING:
-        // Jika User sudah login TAPI role-nya BUKAN 'admin',
-        // tendang paksa dia ke halaman katalog buku user.
         if (Auth::check() && Auth::user()->role !== 'admin') {
-            return redirect()->route('books.index');
+            // Lempar ke dashboard user jika bukan admin
+            return redirect()->route('user.dashboard');
         }
 
         return $next($request);

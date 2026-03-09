@@ -1,56 +1,67 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 
-// 1. Halaman Depan & Tamu
+// Halaman Depan
 Route::get('/', function () { return view('welcome'); });
 
-// Area Tamu (Belum Login)
+// --- AREA TAMU (Belum Login) ---
 Route::middleware('guest')->group(function () {
     // Login
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
 
-    // Register (Khusus User)
+    // Register
     Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
 });
 
-// 2. Area Harus Login
+// Penawar Error bawaan Laravel jika nyasar ke /home
+Route::get('/home', function() {
+    if (Auth::check()) {
+        return Auth::user()->role === 'admin' ? redirect()->route('admin.dashboard') : redirect()->route('user.dashboard');
+    }
+    return redirect()->route('login');
+})->name('home');
+
+// --- AREA WAJIB LOGIN ---
 Route::middleware(['auth'])->group(function () {
 
-    // LOGOUT (Hanya bisa diakses kalau sudah login)
+    // Logout
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    // --- AREA USER (PEMINJAM) ---
-    // User dashboard & aktivitasnya
+    // -- AREA USER BIASA --
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('user.dashboard');
-    Route::get('/books', [BookController::class, 'index'])->name('books.index'); // Katalog User
+    Route::get('/books', [BookController::class, 'index'])->name('books.index');
     Route::get('/my-loans', [TransactionController::class, 'index'])->name('transactions.index');
     Route::post('/transactions', [TransactionController::class, 'store'])->name('transactions.store');
 
-    // --- AREA KHUSUS ADMIN ---
+    // -- AREA KHUSUS ADMIN --
     Route::prefix('admin')->middleware(['is_admin'])->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+        // Dalam grup admin
+Route::patch('/transactions/{transaction}/{status}', [TransactionController::class, 'updateStatus'])->name('admin.transactions.update');
 
-        // Manajemen Buku Admin
-        Route::get('/books', [BookController::class, 'adminIndex'])->name('admin.books.index'); // Tabel Admin
+
+        // Manajemen Buku
+        Route::get('/books-manage', [BookController::class, 'adminIndex'])->name('admin.books.index');
         Route::get('/books/create', [BookController::class, 'create'])->name('books.create');
         Route::post('/books', [BookController::class, 'store'])->name('books.store');
         Route::get('/books/{book}/edit', [BookController::class, 'edit'])->name('books.edit');
         Route::put('/books/{book}', [BookController::class, 'update'])->name('books.update');
         Route::delete('/books/{book}', [BookController::class, 'destroy'])->name('books.destroy');
 
-        // Manajemen Transaksi Admin
+        // Manajemen Transaksi
         Route::get('/transactions', [TransactionController::class, 'adminIndex'])->name('admin.transactions.index');
         Route::patch('/transactions/{transaction}/return', [TransactionController::class, 'returnBook'])->name('transactions.return');
 
-        // Manajemen Anggota
+        // Manajemen User
         Route::get('/users', [AdminController::class, 'usersIndex'])->name('admin.users.index');
     });
 });
