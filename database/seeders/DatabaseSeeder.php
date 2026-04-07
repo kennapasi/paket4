@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
         // 1. Buat Akun Admin (Jika belum ada)
         if (!User::where('role', 'admin')->exists()) {
             User::create([
-                'name' => 'Super Admin',
+                'name' => 'admin joestar',
                 'username' => 'admin',
                 'email' => 'admin@perpusku.com',
                 'password' => Hash::make('admin123'),
@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
         // 2. Buat Akun User Peminjam (Jika belum ada)
         if (!User::where('email', 'user@gmail.com')->exists()) {
             User::create([
-                'name' => 'Budi Santoso',
+                'name' => 'tza joestar',
                 'username' => 'budis',
                 'email' => 'user@gmail.com',
                 'password' => Hash::make('user123'),

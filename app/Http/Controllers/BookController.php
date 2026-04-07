@@ -8,18 +8,20 @@ use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
-// USER: Tampilan Katalog Buku Khusus Siswa
-    public function index() {
-        $books = Book::all();
-        // Ubah arahnya ke folder user/books/index
+// USER: Tampilan Katalog Buku Khusus Siswa (Dengan Fitur Search)
+    public function index(Request $request) {
+        // Jika user mengetik sesuatu di kolom pencarian
+        if ($request->has('search')) {
+            $books = Book::where('judul', 'like', '%' . $request->search . '%')
+                         ->orWhere('penulis', 'like', '%' . $request->search . '%')
+                         ->get();
+        } else {
+            // Tampilkan semua jika tidak mencari
+            $books = Book::latest()->get();
+        }
+
         return view('user.books.index', compact('books'));
     }
-    // ADMIN: Tampilan Tabel Kelola Buku
-    public function adminIndex() {
-        $books = Book::all();
-        return view('admin.books.index', compact('books'));
-    }
-
     // ADMIN: Halaman tambah buku
     public function create() {
         return view('books.create');

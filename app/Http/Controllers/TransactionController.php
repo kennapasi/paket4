@@ -14,15 +14,15 @@ class TransactionController extends Controller
     // ==========================================
 
     // USER: Lihat riwayat sendiri
-    public function index() {
-        $transactions = Transaction::with('book')
-            ->where('user_id', Auth::id())
-            ->latest()
-            ->get();
+   public function index() {
+    $transactions = Transaction::with('book')
+        ->where('user_id', Auth::id())
+        ->latest()
+        ->get();
 
-        // UBAH BARIS INI: arahkan ke folder user/transactions
-        return view('user.transactions.index', compact('transactions'));
-    }
+    // Pastikan di sini pakai "user." !
+    return view('user.transactions.index', compact('transactions'));
+}
 
     // Mengajukan Pinjaman
     public function store(Request $request) {

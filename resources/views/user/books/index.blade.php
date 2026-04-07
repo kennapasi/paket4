@@ -1,7 +1,21 @@
 @extends('layouts.app') @section('content')
 <div class="max-w-6xl mx-auto">
+    <div class="mb-6">
+        <form action="{{ route('books.index') }}" method="GET" class="flex gap-2">
+            <div class="relative flex-1 max-w-md">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-search text-slate-400"></i>
+                </div>
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari judul buku atau penulis..." class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none shadow-sm text-sm">
+            </div>
+            <button type="submit" class="bg-blue-600 text-white px-5 py-3 rounded-xl font-bold hover:bg-blue-700 transition shadow-sm text-sm">Cari</button>
+            @if(request('search'))
+                <a href="{{ route('books.index') }}" class="bg-slate-200 text-slate-600 px-5 py-3 rounded-xl font-bold hover:bg-slate-300 transition shadow-sm text-sm">Reset</a>
+            @endif
+        </form>
+    </div>
     <div class="mb-8">
-        <h2 class="text-3xl font-bold text-slate-800">Katalog Buku 📚</h2>
+        <h2 class="text-3xl font-bold text-slate-800">Katalog Buku </h2>
         <p class="text-slate-500 mt-2">Jelajahi koleksi buku kami dan pinjam buku favoritmu.</p>
     </div>
 
@@ -62,6 +76,20 @@
                 <i class="fas fa-box-open text-4xl mb-3"></i>
                 <p>Belum ada koleksi buku saat ini.</p>
             </div>
+            <div class="mb-6">
+        <form action="{{ route('books.index') }}" method="GET" class="flex gap-2">
+            <div class="relative flex-1 max-w-md">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-search text-slate-400"></i>
+                </div>
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari judul buku atau penulis..." class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none shadow-sm text-sm">
+            </div>
+            <button type="submit" class="bg-blue-600 text-white px-5 py-3 rounded-xl font-bold hover:bg-blue-700 transition shadow-sm text-sm">Cari</button>
+            @if(request('search'))
+                <a href="{{ route('books.index') }}" class="bg-slate-200 text-slate-600 px-5 py-3 rounded-xl font-bold hover:bg-slate-300 transition shadow-sm text-sm">Reset</a>
+            @endif
+        </form>
+    </div>
         @endforelse
     </div>
 </div>
