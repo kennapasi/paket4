@@ -46,9 +46,9 @@
                 @if(Auth::user()->role === 'admin')
 <p class="text-xs text-gray-500 uppercase mt-4 mb-2 px-4">Master Data</p>
 
-    <a href="{{ route('admin.books.index') }}" class="flex items-center px-4 py-3 {{ request()->routeIs('admin.books.*') ? 'bg-blue-600 text-white' : 'text-gray-400 hover:bg-gray-800' }} rounded-lg transition">
-        <i class="fas fa-book w-6"></i> <span>Kelola Buku</span>
-    </a>
+  <a href="{{ route('admin.books.index') }}" class="flex items-center px-4 py-3 {{ request()->routeIs('admin.books.index') ? 'bg-blue-600 text-white' : 'text-gray-400 hover:bg-gray-800' }} rounded-lg transition">
+    <i class="fas fa-book w-6"></i> <span>Kelola Buku</span>
+</a>
 
     <a href="{{ route('admin.users.index') }}" class="flex items-center px-4 py-3 {{ request()->routeIs('admin.users.*') ? 'bg-blue-600 text-white' : 'text-gray-400 hover:bg-gray-800' }} rounded-lg transition">
         <i class="fas fa-users w-6"></i> <span>Data Anggota</span>

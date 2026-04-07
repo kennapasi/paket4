@@ -18,8 +18,8 @@
                     </a>
                     <div class="hidden sm:flex space-x-4 ml-6">
                         <a href="{{ route('user.dashboard') }}" class="{{ request()->routeIs('user.dashboard') ? 'text-blue-600 font-semibold' : 'text-slate-500 hover:text-blue-600' }}">Dashboard</a>
-                        <a href="{{ route('books.index') }}" class="{{ request()->routeIs('books.index') ? 'text-blue-600 font-semibold' : 'text-slate-500 hover:text-blue-600' }}">Katalog Buku</a>
-                        <a href="{{ route('transactions.index') }}" class="{{ request()->routeIs('transactions.index') ? 'text-blue-600 font-semibold' : 'text-slate-500 hover:text-blue-600' }}">Peminjaman Saya</a>
+                        <a href="{{ route('books.index') }}" class="{{ request()->routeIs('user.books.index') ? 'text-blue-600 font-semibold' : 'text-slate-500 hover:text-blue-600' }}">Katalog Buku</a>
+                        <a href="{{ route('transactions.index') }}" class="{{ request()->routeIs('transactions.index') ? 'text-blue-600 font-semibold' : 'text-slate-500 hover:text-blue-600' }}">History Peminjaman</a>
                     </div>
                 </div>
 

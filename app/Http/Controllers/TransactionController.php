@@ -13,13 +13,15 @@ class TransactionController extends Controller
     // AREA USER
     // ==========================================
 
-    // Lihat riwayat
+    // USER: Lihat riwayat sendiri
     public function index() {
         $transactions = Transaction::with('book')
             ->where('user_id', Auth::id())
             ->latest()
             ->get();
-        return view('transactions.index', compact('transactions'));
+
+        // UBAH BARIS INI: arahkan ke folder user/transactions
+        return view('user.transactions.index', compact('transactions'));
     }
 
     // Mengajukan Pinjaman

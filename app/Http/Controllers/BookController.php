@@ -8,12 +8,12 @@ use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
-    // USER: Tampilan Katalog
+// USER: Tampilan Katalog Buku Khusus Siswa
     public function index() {
         $books = Book::all();
-        return view('books.index', compact('books'));
+        // Ubah arahnya ke folder user/books/index
+        return view('user.books.index', compact('books'));
     }
-
     // ADMIN: Tampilan Tabel Kelola Buku
     public function adminIndex() {
         $books = Book::all();
