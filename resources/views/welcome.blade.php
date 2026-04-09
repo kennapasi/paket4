@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Aeternum Library | Perpustakaan Digital</title>
+    <title>Joestar Library | Perpustakaan Digital</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
@@ -684,7 +684,7 @@
                     </div>
                 </div>
 
-                <h1>aeternum<span>library</span></h1>
+                <h1>Joestar<span>library</span></h1>
                 <p class="subtitle">Jelajahi dunia pengetahuan dalam genggamanmu.</p>
 
                 <!-- Button Ayo Jelajahi - LANGSUNG KE HALAMAN LOGIN -->

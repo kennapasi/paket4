@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masuk - PerpusKu</title>
+    <title>Masuk - Joestar Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -282,9 +282,9 @@
                 <i class="fas fa-book-open text-4xl text-[#4a3b6e]"></i>
             </div>
             <h1 class="text-5xl font-bold tracking-tight text-[#4a3b6e] mb-2">
-                perpus<span class="text-[#7b68b0]">ku</span>
+                Joe<span class="text-[#7b68b0]">star</span>
             </h1>
-            <p class="text-[#6b5b8e] text-sm font-medium tracking-widest uppercase">lavender library experience</p>
+            <p class="text-[#6b5b8e] text-sm font-medium tracking-widest uppercase">Joestar library experience</p>
         </div>
 
         <!-- Main Glass Card -->
@@ -418,7 +418,7 @@
             <a href="#" class="text-xs text-[#6b5b8e] hover:text-[#4a3b6e] transition-colors">Kebijakan Privasi</a>
         </div>
         <p class="text-center mt-4 text-xs text-[#6b5b8e] font-medium">
-            &copy; 2024 PerpusKu. Floating on lavender dreams <i class="fas fa-water text-[#7b68b0] mx-1"></i>
+            &copy; 2024 Joestar Library. Floating on lavender dreams <i class="fas fa-water text-[#7b68b0] mx-1"></i>
         </p>
     </div>
 

@@ -8,7 +8,11 @@ use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
-// USER: Tampilan Katalog Buku Khusus Siswa (Dengan Fitur Search)
+    // ==========================================
+    // AREA USER / SISWA
+    // ==========================================
+
+    // Tampilan Katalog Buku Khusus Siswa (Dengan Fitur Search)
     public function index(Request $request) {
         // Jika user mengetik sesuatu di kolom pencarian
         if ($request->has('search')) {
@@ -22,12 +26,24 @@ class BookController extends Controller
 
         return view('user.books.index', compact('books'));
     }
-    // ADMIN: Halaman tambah buku
-    public function create() {
-        return view('books.create');
+
+
+    // ==========================================
+    // AREA KHUSUS ADMIN
+    // ==========================================
+
+    // Tampilan Tabel Kelola Buku Admin (YANG TADI HILANG)
+    public function adminIndex() {
+        $books = Book::latest()->get();
+        return view('admin.books.index', compact('books'));
     }
 
-    // ADMIN: Proses simpan buku ke database (Upload Foto Baru)
+    // Halaman tambah buku (Sudah diarahkan ke folder admin)
+    public function create() {
+        return view('admin.books.create');
+    }
+
+    // Proses simpan buku ke database (Upload Foto Baru)
     public function store(Request $request) {
         $request->validate([
             'judul' => 'required',
@@ -50,17 +66,17 @@ class BookController extends Controller
         return redirect()->route('admin.books.index')->with('success', 'Buku dan foto berhasil ditambahkan.');
     }
 
-    // ADMIN: Halaman edit
+    // Halaman edit (Sudah diarahkan ke folder admin)
     public function edit(Book $book) {
-        return view('books.edit', compact('book'));
+        return view('admin.books.edit', compact('book'));
     }
 
-    // ADMIN: Proses update (Edit Foto Opsional)
+    // Proses update (Edit Foto Opsional)
     public function update(Request $request, Book $book) {
         $request->validate([
             'judul' => 'required',
             'stok' => 'required|integer',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048' // Boleh dikosongkan saat edit
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048' // Opsional saat edit
         ]);
 
         $data = $request->all();
@@ -79,9 +95,9 @@ class BookController extends Controller
         return redirect()->route('admin.books.index')->with('success', 'Data buku diperbarui.');
     }
 
-    // ADMIN: Hapus buku
+    // Hapus buku
     public function destroy(Book $book) {
-        // Hapus juga file fotonya dari penyimpanan
+        // Hapus juga file fotonya dari penyimpanan komputer
         if ($book->image) {
             Storage::disk('public')->delete($book->image);
         }
