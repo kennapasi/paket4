@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
         if (!User::where('role', 'admin')->exists()) {
             User::create([
                 'name' => 'admin joestar',
-                'username' => 'admin',
+                'username' => 'joestar',
                 'email' => 'admin@perpusku.com',
                 'password' => Hash::make('admin123'),
                 'role' => 'admin',
@@ -24,8 +24,8 @@ class DatabaseSeeder extends Seeder
         // 2. Buat Akun User Peminjam (Jika belum ada)
         if (!User::where('email', 'user@gmail.com')->exists()) {
             User::create([
-                'name' => 'tza joestar',
-                'username' => 'budis',
+                'name' => 'bubud geming',
+                'username' => 'budi joestar',
                 'email' => 'user@gmail.com',
                 'password' => Hash::make('user123'),
                 'role' => 'peminjam',
